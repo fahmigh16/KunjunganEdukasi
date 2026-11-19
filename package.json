@@ -1,0 +1,9 @@
+{
+  "name": "kunjungan-edukasi-project",
+  "version": "1.0.0",
+  "description": "Sistem Reservasi Kunjungan Edukasi POLINELA",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev"
+  }
+}

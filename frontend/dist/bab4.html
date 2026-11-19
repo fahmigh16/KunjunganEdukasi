@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bab 4 - Perancangan Sistem Reservasi Kunjungan Edukasi POLINELA</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Mermaid.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 12pt; }
+      .diagram-card { border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid; }
+    }
+    .diagram-container svg {
+      max-width: 100% !important;
+      height: auto !important;
+      background: white !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased pb-24">
+
+  <!-- Header Sticky Navigation -->
+  <header class="sticky top-0 z-50 bg-blue-900 text-white shadow-lg border-b border-blue-700">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h1 class="text-lg md:text-xl font-bold tracking-tight">Dokumentasi Skripsi / Sempro - Bab 4</h1>
+        <p class="text-xs text-blue-200">Sistem Reservasi Kunjungan Edukasi POLINELA (Unit Pengelola Bisnis)</p>
+      </div>
+      <div class="flex items-center gap-2 no-print">
+        <button onclick="window.print()" class="px-3 py-1.5 bg-blue-800 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition flex items-center gap-1.5">
+          🖨️ Cetak / Simpan PDF
+        </button>
+        <button onclick="copyAllDocument()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow transition flex items-center gap-1.5">
+          📋 Salin Semua Teks
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl text-sm font-medium transition-opacity duration-300 opacity-0 pointer-events-none flex items-center gap-2 border border-slate-700">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">Teks berhasil disalin!</span>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+
+    <!-- Petunjuk Pemakaian -->
+    <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl shadow-sm text-sm no-print">
+      <h3 class="font-bold text-blue-900 mb-1 flex items-center gap-2">
+        💡 Panduan Penggunaan Halaman Ini:
+      </h3>
+      <ul class="list-disc list-inside text-blue-800 space-y-1">
+        <li><strong>Simpan Gambar Diagram:</strong> Klik tombol <strong>"📥 Download PNG (HD)"</strong> di atas setiap diagram untuk langsung mengunduh gambar beresolusi tinggi, siap dimasukkan ke Microsoft Word.</li>
+        <li><strong>Salin Teks ke Word:</strong> Klik tombol <strong>"📋 Salin Teks"</strong> pada masing-masing sub-bab untuk menyalin format tulisan ilmiah secara rapi.</li>
+        <li>Bisa juga klik kanan langsung pada diagram lalu pilih <em>"Save image as..."</em> atau <em>"Copy image"</em>.</li>
+      </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 4.3.1 RANCANGAN ARSITEKTUR SISTEM -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-1" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.1</span>
+            <h2 class="text-2xl font-bold text-slate-900">Rancangan Arsitektur Sistem</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-1')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-arsitektur', '4.3.1_Arsitektur_Sistem')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG (HD)
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-1" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Sistem Reservasi Kunjungan Edukasi POLINELA dibangun menggunakan arsitektur <strong>3-Tier (Layered Client-Server Architecture)</strong> berbasis web modern dengan komunikasi <em>RESTful Application Programming Interface (API)</em>. Pemisahan arsitektur ini memisahkan secara tegas antara antarmuka pengguna, pemrosesan logika bisnis, dan penyimpanan data persisten sehingga sistem memiliki skalabilitas tinggi, keamanan optimal, dan kemudahan dalam pemeliharaan berkala.
+          </p>
+          <ol class="list-decimal list-outside pl-5 space-y-2">
+            <li>
+              <strong>Presentation Layer (Frontend Client):</strong> Dibangun sebagai <em>Single Page Application (SPA)</em> menggunakan React 19 yang dikompilasi dengan Vite 8. Desain antarmuka memanfaatkan Tailwind CSS v4 dengan bantuan ikonografi Lucide React dan animasi terpandu Framer Motion. Pengelolaan rute dinamis ditangani oleh React Router DOM v7 serta manajemen sesi terpusat menggunakan React Context API (<code>AuthContext</code>). Komunikasi data ke server dilakukan secara asinkron menggunakan Axios.
+            </li>
+            <li>
+              <strong>Application / Business Logic Layer (Backend Server):</strong> Berjalan pada runtime Node.js menggunakan framework Express.js pada port 5000. Lapisan ini mengimplementasikan konsep <em>Model-Controller-Routes (MCR)</em>. Pengamanan endpoint dilakukan menggunakan <em>JSON Web Token (JWT)</em> dan enkripsi password satu arah dengan algoritma <code>bcrypt</code>. Server juga bertindak sebagai validator format data pendaftaran kunjungan serta kompresi pengunggahan berkas bukti transfer hingga limit 15MB. Analitik dan rekap khusus pimpinan diproses oleh <code>PimpinanController</code> melalui endpoint <code>/api/pimpinan</code> yang dibatasi untuk peran <code>pimpinan</code>.
+            </li>
+            <li>
+              <strong>Data Persistence Layer (Database):</strong> Menggunakan Object Relational Mapping (ORM) Sequelize untuk menjembatani kode backend dengan database relasional SQLite (<code>database.sqlite</code>) pada tahap pengembangan dan siap dialihkan ke database relasional MySQL pada server produksi.
+            </li>
+          </ol>
+        </div>
+
+        <!-- Diagram Arsitektur -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.1 Diagram Arsitektur Sistem Kunjungan Edukasi</p>
+          <div id="diagram-arsitektur" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+flowchart TD
+    subgraph Client ["1. Presentation Layer (Web Browser)"]
+        UI["React 19 SPA (Vite + Tailwind CSS v4)"]
+        State["State Management (AuthContext & LocalStorage)"]
+        HTTP["HTTP Client (Axios)"]
+        UI <--> State
+        UI <--> HTTP
+    end
+
+    subgraph Server ["2. Application Tier (Node.js & Express.js :5000)"]
+        Router["Express Routes (/api/*)"]
+        MW["Middleware (CORS, JWT Authenticator, Role Guard)"]
+        subgraph Logic ["Controllers (Business Logic)"]
+            AC["AuthController"]
+            BC["BookingController"]
+            PC["PaymentController"]
+            PKC["PackageController"]
+            SC["AvailabilityController"]
+            NC["NotificationController"]
+            PiC["PimpinanController (Statistik & Rekapitulasi)"]
+        end
+        Router --> MW
+        MW --> Logic
+    end
+
+    subgraph Data ["3. Data Layer (Relational Database)"]
+        ORM["Sequelize ORM v6"]
+        DB[("Database (SQLite / MySQL)")]
+        ORM <--> DB
+    end
+
+    HTTP <-->|REST API JSON via HTTP/HTTPS| Router
+    Logic <--> ORM
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.2 USE CASE DIAGRAM -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-2" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.2</span>
+            <h2 class="text-2xl font-bold text-slate-900">Use Case Diagram</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-2')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-usecase', '4.3.2_Use_Case_Diagram')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG (HD)
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-2" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Use Case Diagram menggambarkan fungsionalitas yang disediakan oleh sistem dari sudut pandang pengguna yang berinteraksi langsung. Pada Sistem Reservasi Kunjungan Edukasi POLINELA, terdapat 3 (tiga) aktor utama:
+          </p>
+          <ul class="list-disc list-outside pl-5 space-y-2">
+            <li><strong>Pengunjung / Sekolah (User):</strong> Perwakilan guru atau pihak instansi pendidikan yang berkepentingan melakukan reservasi kunjungan rombongan siswa ke laboratorium dan unit bisnis Polinela.</li>
+            <li><strong>Administrator (Admin UPB POLINELA):</strong> Petugas internal Unit Pengelola Bisnis Polinela yang memvalidasi ketersediaan tempat, meninjau kesesuaian data reservasi, mengonfirmasi pembayaran resmi, dan mengelola paket serta status aktif/nonaktif aktivitas edukasi.</li>
+            <li><strong>Pimpinan (Pimpinan UPB POLINELA):</strong> Pimpinan yang memiliki hak akses khusus untuk memantau ringkasan dan delapan grafik analitik, menyaring periode data, menelusuri rekapitulasi sekolah, serta mengekspor data sebagai CSV yang kompatibel dengan Excel atau mencetaknya ke PDF.</li>
+          </ul>
+
+          <div class="overflow-x-auto my-4">
+            <table class="min-w-full text-xs border border-slate-200 rounded-lg">
+              <thead class="bg-slate-100 text-slate-800">
+                <tr>
+                  <th class="border p-2 text-left">Kode</th>
+                  <th class="border p-2 text-left">Use Case</th>
+                  <th class="border p-2 text-left">Aktor</th>
+                  <th class="border p-2 text-left">Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border p-2 font-mono">UC-01</td>
+                  <td class="border p-2 font-semibold">Registrasi & Login</td>
+                  <td class="border p-2">User, Admin, Pimpinan</td>
+                  <td class="border p-2">User dapat mendaftar; seluruh peran masuk menggunakan alamat email dan password yang tersimpan dalam bentuk hash.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-02</td>
+                  <td class="border p-2 font-semibold">Melihat Katalog Paket & Aktivitas</td>
+                  <td class="border p-2">User</td>
+                  <td class="border p-2">Menjelajahi paket kunjungan, tarif per siswa, durasi, fasilitas gratis, dan fasilitas lab.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-03</td>
+                  <td class="border p-2 font-semibold">Memeriksa Ketersediaan Kuota</td>
+                  <td class="border p-2">User & Admin</td>
+                  <td class="border p-2">Melihat kapasitas slot per tanggal dan sesi kunjungan (Pagi / Siang).</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-04</td>
+                  <td class="border p-2 font-semibold">Membuat Reservasi (Wizard)</td>
+                  <td class="border p-2">User</td>
+                  <td class="border p-2">Mengisi 6 tahapan form terpandu hingga terbit kode booking POL-YYYYMMDD-XXXX.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-05</td>
+                  <td class="border p-2 font-semibold">Memperbarui Data Pengajuan (Revisi)</td>
+                  <td class="border p-2">User</td>
+                  <td class="border p-2">Memperbaiki data pengajuan sesuai catatan revisi dari admin lalu mengirimkannya kembali.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-06</td>
+                  <td class="border p-2 font-semibold">Mengunggah Bukti Pembayaran</td>
+                  <td class="border p-2">User</td>
+                  <td class="border p-2">Mengunggah foto bukti transfer setelah permohonan disetujui.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-07</td>
+                  <td class="border p-2 font-semibold">Memantau Status & Riwayat Reservasi</td>
+                  <td class="border p-2">User</td>
+                  <td class="border p-2">Melihat status pemesanan dan riwayat perubahan status pada dashboard pengguna.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-08</td>
+                  <td class="border p-2 font-semibold">Review & Verifikasi Booking</td>
+                  <td class="border p-2">Admin</td>
+                  <td class="border p-2">Memeriksa detail permohonan, menyetujui, menolak dengan alasan, atau meminta revisi.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-09</td>
+                  <td class="border p-2 font-semibold">Verifikasi Pembayaran</td>
+                  <td class="border p-2">Admin</td>
+                  <td class="border p-2">Memvalidasi mutasi rekening terhadap bukti bayar hingga status menjadi CONFIRMED.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-10</td>
+                  <td class="border p-2 font-semibold">Kelola Kalender & Kuota Slot</td>
+                  <td class="border p-2">Admin</td>
+                  <td class="border p-2">Menyesuaikan kapasitas kuota harian atau memblokir tanggal libur kampus.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-11</td>
+                  <td class="border p-2 font-semibold">Kelola Paket & Aktivitas</td>
+                  <td class="border p-2">Admin</td>
+                  <td class="border p-2">Manajemen master data paket edukasi dan pilihan aktivitas praktik lapangan.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-12</td>
+                  <td class="border p-2 font-semibold">Rekapitulasi Data & Laporan Sekolah</td>
+                  <td class="border p-2">Admin</td>
+                  <td class="border p-2">Meninjau ringkasan kunjungan per sekolah untuk mendukung pelaporan operasional.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-13</td>
+                  <td class="border p-2 font-semibold">Melihat Dashboard Statistik & Grafik</td>
+                  <td class="border p-2">Pimpinan</td>
+                  <td class="border p-2">Memantau ringkasan kunjungan, peserta, pemesanan, pendapatan terverifikasi, dan delapan grafik analitik.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-14</td>
+                  <td class="border p-2 font-semibold">Memfilter Analitik & Menelusuri Rekapitulasi</td>
+                  <td class="border p-2">Pimpinan</td>
+                  <td class="border p-2">Memilih periode, mencari dan mengurutkan data, serta menelusuri rekapitulasi kunjungan sekolah.</td>
+                </tr>
+                <tr>
+                  <td class="border p-2 font-mono">UC-15</td>
+                  <td class="border p-2 font-semibold">Mengekspor Laporan</td>
+                  <td class="border p-2">Pimpinan</td>
+                  <td class="border p-2">Mengunduh data dalam format CSV yang kompatibel dengan Excel atau mencetak laporan ke PDF.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Diagram Use Case -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.2 Use Case Diagram Sistem</p>
+          <div id="diagram-usecase" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+flowchart LR
+    User["👤 Pengunjung / Sekolah"]
+    Admin["👨‍💼 Admin UPB Polinela"]
+    Pimpinan["👔 Pimpinan UPB Polinela"]
+
+    subgraph SystemBoundary ["Sistem Reservasi Kunjungan Edukasi POLINELA"]
+        UC1(["UC-01 Registrasi & Login Akun"])
+        UC2(["UC-02 Lihat Katalog Paket & Aktivitas"])
+        UC3(["UC-03 Cek Ketersediaan Slot Jadwal"])
+        UC4(["UC-04 Buat Reservasi Kunjungan Wizard"])
+        UC5(["UC-05 Revisi Data Pengajuan"])
+        UC6(["UC-06 Unggah Bukti Transfer Pembayaran"])
+        UC7(["UC-07 Pantau Status & Timeline Audit Trail"])
+        UC8(["UC-08 Verifikasi Status Booking (Approve/Reject/Revisi)"])
+        UC9(["UC-09 Verifikasi Bukti Pembayaran"])
+        UC10(["UC-10 Manajemen Slot Kalender & Kuota"])
+        UC11(["UC-11 Kelola Master Paket & Aktivitas"])
+        UC12(["UC-12 Rekapitulasi Data & Laporan Sekolah"])
+        UC13(["UC-13 Dashboard Statistik & Delapan Grafik"])
+        UC14(["UC-14 Filter Analitik & Telusuri Rekapitulasi"])
+        UC15(["UC-15 Ekspor Laporan CSV / Cetak PDF"])
+    end
+
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
+
+    Admin --> UC1
+    Admin --> UC8
+    Admin --> UC9
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+
+    Pimpinan --> UC1
+    Pimpinan --> UC13
+    Pimpinan --> UC14
+    Pimpinan --> UC15
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.3 ACTIVITY DIAGRAM -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-3" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.3</span>
+            <h2 class="text-2xl font-bold text-slate-900">Activity Diagram</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-3')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-activity-booking', '4.3.3a_Activity_Diagram_Booking')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG Booking
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-activity-payment', '4.3.3b_Activity_Diagram_Payment')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG Pembayaran
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-3" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Activity diagram menggambarkan aliran kerja (*workflow*) operasional dari suatu skenario dalam sistem. Dalam sistem ini disajikan 2 (dua) aktivitas utama:
+          </p>
+          <ol class="list-decimal list-outside pl-5 space-y-2">
+            <li><strong>Aktivitas Reservasi Kunjungan Terpandu (Booking Wizard):</strong> Memandu pemohon melalui validasi form bertahap, pemilihan 2 aktivitas laboratorium, hingga status pendaftaran tercatat sebagai <code>PENDING_REVIEW</code>.</li>
+            <li><strong>Aktivitas Pembayaran & Verifikasi Admin:</strong> Menggambarkan transaksi pembayaran, pengunggahan foto struk bukti transfer, pengecekan oleh admin, hingga penetapan status <code>CONFIRMED</code>.</li>
+          </ol>
+        </div>
+
+        <!-- Diagram Activity A -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.3 (A) Activity Diagram Pembuatan Reservasi Kunjungan</p>
+          <div id="diagram-activity-booking" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+stateDiagram-v2
+    [*] --> BukaMenuBooking: Pengguna Membuka Halaman Booking
+    BukaMenuBooking --> Step1: Tampil Step 1 (Identitas Pemesan / PIC)
+    Step1 --> ValidasiStep1: Klik "Lanjut ke Sekolah"
+    
+    state ValidasiStep1 <<choice>>
+    ValidasiStep1 --> Step1: Data PIC Belum Lengkap (Muncul Alert)
+    ValidasiStep1 --> Step2: Data Valid -> Tampil Step 2 (Data Sekolah)
+
+    Step2 --> ValidasiStep2: Klik "Lanjut ke Jadwal"
+    state ValidasiStep2 <<choice>>
+    ValidasiStep2 --> Step2: Nama / Kota Sekolah Kosong
+    ValidasiStep2 --> Step3: Data Valid -> Tampil Step 3 (Jadwal & Kuota)
+
+    Step3 --> Step4: Pilih Tanggal & Sesi Kunjungan
+    Step4 --> ValidasiAktivitas: Pilih Paket & Centang Aktivitas Lapangan
+
+    state ValidasiAktivitas <<choice>>
+    ValidasiAktivitas --> Step4: Pilihan Tidak Sama Dengan 2 Aktivitas
+    ValidasiAktivitas --> Step5: Tepat Memilih 2 Aktivitas -> Tampil Step 5 (Review Rincian)
+
+    Step5 --> Step6: Setujui Persyaratan & Klik "Kirim Reservasi"
+    Step6 --> SystemProcess: Sistem Generate Kode POL-YYYYMMDD-XXXX
+    SystemProcess --> SetStatusPending: Simpan Data & Set Status PENDING_REVIEW
+    SetStatusPending --> CreateAuditTrail: Catat Riwayat Perubahan Status Awal
+    CreateAuditTrail --> SuccessScreen: Tampilkan Kode Booking & Opsi Cetak Invoice
+    SuccessScreen --> [*]
+            </pre>
+          </div>
+        </div>
+
+        <!-- Diagram Activity B -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.3 (B) Activity Diagram Pembayaran dan Verifikasi Admin</p>
+          <div id="diagram-activity-payment" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+stateDiagram-v2
+    [*] --> CekStatusApproved: Admin Telah Menyetujui Booking (Status: APPROVED)
+    CekStatusApproved --> AksesHalamanBayar: Pemohon Masuk ke Halaman Pembayaran
+    AksesHalamanBayar --> InfoRekening: Sistem Menampilkan Nomor Rekening BNI & BMT Muamalah
+    InfoRekening --> TransferBank: Pemohon Melakukan Transfer Bank
+    TransferBank --> UploadStruk: Unggah Foto Bukti Transfer & Nama Pengirim
+    UploadStruk --> UpdateSubmitted: Status Booking Berubah -> PAYMENT_SUBMITTED
+    UpdateSubmitted --> NotifKeAdmin: Notifikasi Masuk ke Dashboard Admin
+
+    NotifKeAdmin --> ReviewAdmin: Admin Membuka Tab Verifikasi Pembayaran
+    ReviewAdmin --> EvaluasiBukti: Admin Memeriksa Gambar Struk & Mutasi Rekening
+
+    state KeputusanAdmin <<choice>>
+    EvaluasiBukti --> KeputusanAdmin: Hasil Verifikasi?
+    
+    KeputusanAdmin --> BuktiValid: Sesuai & Valid
+    BuktiValid --> SetConfirmed: Set Status Booking -> CONFIRMED
+    SetConfirmed --> LogAudit1: Catat Status History & Notifikasi Sukses ke User
+    LogAudit1 --> [*]
+
+    KeputusanAdmin --> BuktiTidakValid: Salah / Tidak Sah
+    BuktiTidakValid --> SetRejected: Admin Masukkan Alasan Penolakan
+    SetRejected --> RevertApproved: Status Booking Kembali ke APPROVED
+    RevertApproved --> LogAudit2: Kirim Notifikasi ke User untuk Re-upload Bukti
+    LogAudit2 --> [*]
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.4 SEQUENCE DIAGRAM -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-4" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.4</span>
+            <h2 class="text-2xl font-bold text-slate-900">Sequence Diagram</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-4')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-sequence-booking', '4.3.4a_Sequence_Diagram_Booking')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG Booking
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-sequence-payment', '4.3.4b_Sequence_Diagram_Payment')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG Verifikasi
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-4" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Sequence Diagram mendokumentasikan interaksi pesan antar objek dalam kurun waktu eksekusi. Pada bab ini disajikan 2 (dua) sequence diagram yang merefleksikan alur pengiriman request HTTP, pemanggilan controller, interaksi model Sequelize, dan commit basis data.
+          </p>
+        </div>
+
+        <!-- Sequence A -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.4 (A) Sequence Diagram Proses Pembuatan Reservasi Kunjungan</p>
+          <div id="diagram-sequence-booking" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Pengguna as Pengunjung (User)
+    participant Wizard as React (BookingWizard)
+    participant AuthContext as AuthContext
+    participant Server as Express (BookingController)
+    participant BookingModel as Model (Booking)
+    participant HistoryModel as Model (BookingStatusHistory)
+    participant DB as SQLite / MySQL DB
+
+    Pengguna->>Wizard: Isi Lengkap Data Step 1 s.d. Step 5
+    Pengguna->>Wizard: Klik Tombol "Kirim Pendaftaran"
+    Wizard->>AuthContext: Request Token JWT yang Tersimpan
+    AuthContext-->>Wizard: Return Bearer Token
+    Wizard->>Server: POST /api/bookings (Payload JSON + Header Auth)
+    activate Server
+    Server->>Server: Verifikasi JWT & Otorisasi Pengguna
+    Server->>Server: Validasi Data (2 Aktivitas Wajib, Kuota Tanggal)
+    Server->>Server: Generate Kode Booking Unik (POL-YYYYMMDD-XXXX)
+    Server->>BookingModel: Booking.create(payload, status: 'PENDING_REVIEW')
+    activate BookingModel
+    BookingModel->>DB: INSERT INTO Bookings VALUES (...)
+    DB-->>BookingModel: Record Berhasil Dibuat (id, bookingCode)
+    BookingModel-->>Server: Instance Booking Tersimpan
+    deactivate BookingModel
+
+    Server->>HistoryModel: BookingStatusHistory.create(newStatus: 'PENDING_REVIEW')
+    activate HistoryModel
+    HistoryModel->>DB: INSERT INTO BookingStatusHistories VALUES (...)
+    DB-->>HistoryModel: History Log Tersimpan
+    HistoryModel-->>Server: Instance Log Tersimpan
+    deactivate HistoryModel
+
+    Server-->>Wizard: HTTP 201 Created (bookingCode, detail, message)
+    deactivate Server
+    Wizard->>Wizard: Update State step = 6 (Success Step)
+    Wizard-->>Pengguna: Tampilkan Layar Konfirmasi & Kode Booking Resmi
+            </pre>
+          </div>
+        </div>
+
+        <!-- Sequence B -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.4 (B) Sequence Diagram Proses Verifikasi Pembayaran oleh Admin</p>
+          <div id="diagram-sequence-payment" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Admin as Admin UPB
+    participant AdminUI as React (AdminDashboard)
+    participant Server as Express (PaymentController)
+    participant PayModel as Model (Payment)
+    participant BookModel as Model (Booking)
+    participant NotifModel as Model (Notification)
+    participant DB as SQLite / MySQL DB
+
+    Admin->>AdminUI: Buka Tab "Verifikasi Pembayaran"
+    AdminUI->>Server: GET /api/payments/admin/all
+    Server->>PayModel: Payment.findAll(where: { status: 'SUBMITTED' })
+    PayModel->>DB: SELECT * FROM Payments WHERE status = 'SUBMITTED'
+    DB-->>PayModel: Daftar Data Pembayaran
+    PayModel-->>Server: Data Pembayaran & Bukti Struk
+    Server-->>AdminUI: Render Daftar Pembayaran Menunggu Konfirmasi
+
+    Admin->>AdminUI: Klik Tombol "Verifikasi & Setujui Pembayaran"
+    AdminUI->>Server: POST /api/payments/verify/:bookingId
+    activate Server
+    Server->>PayModel: Payment.update(status: 'VERIFIED', verifiedById)
+    PayModel->>DB: UPDATE Payments SET status = 'VERIFIED'
+    DB-->>PayModel: Update Sukses
+
+    Server->>BookModel: Booking.update(status: 'CONFIRMED')
+    BookModel->>DB: UPDATE Bookings SET status = 'CONFIRMED'
+    DB-->>BookModel: Update Sukses
+
+    Server->>NotifModel: Notification.create(userId, title: 'Pembayaran Diverifikasi')
+    NotifModel->>DB: INSERT INTO Notifications VALUES (...)
+    DB-->>NotifModel: Notifikasi Tersimpan
+
+    Server-->>AdminUI: HTTP 200 OK (message: "Pembayaran berhasil diverifikasi")
+    deactivate Server
+    AdminUI-->>Admin: Refresh Tabel & Tampilkan Pesan Sukses
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.5 CLASS DIAGRAM -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-5" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.5</span>
+            <h2 class="text-2xl font-bold text-slate-900">Class Diagram</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-5')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-class', '4.3.5_Class_Diagram')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG (HD)
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-5" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Class Diagram merepresentasikan struktur kelas-kelas model data yang diimplementasikan pada backend menggunakan Sequelize ORM. Setiap kelas merefleksikan satu entitas tabel dengan atribut, tipe data, serta asosiasi relasi antar kelas (seperti <em>hasMany</em>, <em>belongsTo</em>, dan <em>hasOne</em>).
+          </p>
+        </div>
+
+        <!-- Diagram Class -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.5 Class Diagram Model Sequelize</p>
+          <div id="diagram-class" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+classDiagram
+    class User {
+        +Integer id
+        +String name
+        +String email
+        +String password
+        +String phone
+        +String institutionName
+        +String role
+        +Boolean isActive
+        +associate(models)
+    }
+
+    class Role {
+        +Integer id
+        +String name
+        +String description
+        +associate(models)
+    }
+
+    class EducationalPackage {
+        +Integer id
+        +String name
+        +String slug
+        +String category
+        +String shortDescription
+        +Text description
+        +String duration
+        +Decimal price
+        +Integer minParticipants
+        +Integer maxParticipants
+        +Integer visitCount
+        +Text facilities
+    }
+
+    class Activity {
+        +Integer id
+        +String name
+        +String category
+        +Text description
+        +String iconName
+        +String imageUrl
+        +Boolean isActive
+        +Boolean isAvailable
+    }
+
+    class Booking {
+        +Integer id
+        +String bookingCode
+        +Integer userId
+        +String visitorName
+        +String email
+        +String phone
+        +String whatsapp
+        +String picPosition
+        +String schoolName
+        +String schoolOrigin
+        +String educationLevel
+        +Text schoolAddress
+        +String city
+        +String province
+        +String teacherName
+        +String teacherPhone
+        +String visitDate
+        +String visitTimeSlot
+        +Integer studentCount
+        +Integer teacherCount
+        +Integer totalVisitors
+        +Integer packageId
+        +String packageName
+        +Decimal packagePrice
+        +Decimal totalEstimatedCost
+        +Text selectedActivities
+        +Text notes
+        +String status
+    }
+
+    class BookingItem {
+        +Integer id
+        +Integer bookingId
+        +Integer packageId
+        +Integer quantity
+        +Decimal priceAtBooking
+    }
+
+    class BookingStatusHistory {
+        +Integer id
+        +Integer bookingId
+        +String oldStatus
+        +String newStatus
+        +Integer changedById
+        +String changedByName
+        +Text notes
+    }
+
+    class Payment {
+        +Integer id
+        +Integer bookingId
+        +Decimal amount
+        +String paymentDate
+        +String senderName
+        +String bankName
+        +Text proofUrl
+        +String status
+        +Text rejectionReason
+        +Integer verifiedById
+    }
+
+    class PaymentSetting {
+        +Integer id
+        +String bankName
+        +String accountName
+        +String accountNumber
+        +Text qrisUrl
+        +Text instructions
+        +Boolean isActive
+    }
+
+    class AvailabilitySlot {
+        +Integer id
+        +String date
+        +String timeSlot
+        +Integer capacity
+        +Integer bookedCount
+        +String status
+        +Text notes
+    }
+
+    class Notification {
+        +Integer id
+        +Integer userId
+        +String title
+        +Text message
+        +String type
+        +Boolean isRead
+        +String link
+    }
+
+    Role "1" -- "*" User : roles
+    User "1" -- "*" Booking : creates
+    User "1" -- "*" Notification : receives
+    User "1" -- "*" Payment : verifies
+    User "1" -- "*" BookingStatusHistory : logs
+    EducationalPackage "1" -- "*" Booking : chosen
+    EducationalPackage "1" -- "*" BookingItem : packages
+    Booking "1" -- "1" Payment : has
+    Booking "1" -- "*" BookingStatusHistory : tracks
+    Booking "1" -- "*" BookingItem : contains
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.6 PERANCANGAN BASIS DATA (ERD) -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-6" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.6</span>
+            <h2 class="text-2xl font-bold text-slate-900">Perancangan Basis Data (ERD)</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-6')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-erd', '4.3.6_ERD_Database')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG (HD)
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-6" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Perancangan basis data disusun untuk menjamin integritas relasional, redundansi minimal, dan kecepatan pencarian data reservasi. Model data terdiri dari tabel master (pengguna, peran, paket, aktivitas, pengaturan rekening) dan tabel transaksi (reservasi, item reservasi, riwayat status, bukti pembayaran, slot kuota, dan notifikasi).
+          </p>
+
+          <h4 class="font-bold text-slate-900 text-base mt-4">Kamus Data Tabel Utama:</h4>
+          <ol class="list-decimal list-outside pl-5 space-y-1 text-xs">
+            <li><strong>Users:</strong> Menyimpan kredensial login, nomor telepon, asal instansi, status akun, dan hak akses (<code>role: 'user' | 'admin' | 'pimpinan'</code>).</li>
+            <li><strong>EducationalPackages:</strong> Menyimpan data paket wisata edukasi (nama paket, deskripsi, harga per siswa, fasilitas).</li>
+            <li><strong>Activities:</strong> Daftar pilihan aktivitas praktik laboratorium (seperti peternakan, perikanan, budidaya hidroponik).</li>
+            <li><strong>Bookings:</strong> Tabel induk transaksi pemesanan (kode booking unik <code>POL-YYYYMMDD-XXXX</code>, tanggal, sesi, jumlah siswa, total biaya, status).</li>
+            <li><strong>Payments:</strong> Menyimpan rekaman pembayaran, nominal, nama bank, bukti foto transfer (URL/Base64), dan status verifikasi.</li>
+            <li><strong>BookingStatusHistories:</strong> Tabel audit trail yang mencatat setiap perpindahan status reservasi (oldStatus, newStatus, catatan revisi/penolakan, waktu).</li>
+            <li><strong>AvailabilitySlots:</strong> Mengontrol kapasitas kuota harian dan batas maksimal pengunjung pada sesi pagi atau siang.</li>
+          </ol>
+        </div>
+
+        <!-- Diagram ERD -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.6 Entity Relationship Diagram (ERD)</p>
+          <div id="diagram-erd" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+erDiagram
+    USERS ||--o{ BOOKINGS : "membuat (1:N)"
+    USERS ||--o{ NOTIFICATIONS : "menerima (1:N)"
+    USERS ||--o{ BOOKING_STATUS_HISTORIES : "mencatat (1:N)"
+    USERS ||--o{ PAYMENTS : "memverifikasi (1:N)"
+    
+    EDUCATIONAL_PACKAGES ||--o{ BOOKINGS : "dipilih (1:N)"
+    EDUCATIONAL_PACKAGES ||--o{ BOOKING_ITEMS : "termuat (1:N)"
+    
+    BOOKINGS ||--o| PAYMENTS : "memiliki (1:1)"
+    BOOKINGS ||--o{ BOOKING_ITEMS : "terdiri (1:N)"
+    BOOKINGS ||--o{ BOOKING_STATUS_HISTORIES : "memiliki riwayat (1:N)"
+
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password
+        string phone
+        string institutionName
+        string role "user | admin | pimpinan"
+        boolean isActive
+    }
+
+    EDUCATIONAL_PACKAGES {
+        int id PK
+        string name
+        string slug
+        string category
+        decimal price
+        int minParticipants
+        int maxParticipants
+        text facilities
+    }
+
+    ACTIVITIES {
+        int id PK
+        string name
+        string category
+        text description
+        string iconName
+        boolean isActive
+        boolean isAvailable
+    }
+
+    BOOKINGS {
+        int id PK
+        string bookingCode UK "POL-YYYYMMDD-XXXX"
+        int userId FK
+        string visitorName
+        string email
+        string phone
+        string schoolName
+        string educationLevel
+        string visitDate
+        string visitTimeSlot
+        int studentCount
+        int teacherCount
+        int packageId FK
+        decimal totalEstimatedCost
+        text selectedActivities "JSON Array"
+        string status "PENDING_REVIEW, APPROVED, etc"
+    }
+
+    PAYMENTS {
+        int id PK
+        int bookingId FK
+        decimal amount
+        string paymentDate
+        string senderName
+        string bankName
+        text proofUrl "Base64 / File URL"
+        string status "SUBMITTED, VERIFIED, REJECTED"
+        text rejectionReason
+        int verifiedById FK
+    }
+
+    BOOKING_STATUS_HISTORIES {
+        int id PK
+        int bookingId FK
+        string oldStatus
+        string newStatus
+        int changedById FK
+        string changedByName
+        text notes
+    }
+
+    AVAILABILITY_SLOTS {
+        int id PK
+        string date
+        string timeSlot
+        int capacity
+        int bookedCount
+        string status "AVAILABLE, FULL, BLOCKED"
+    }
+
+    PAYMENT_SETTINGS {
+        int id PK
+        string bankName
+        string accountName
+        string accountNumber
+        text instructions
+        boolean isActive
+    }
+
+    NOTIFICATIONS {
+        int id PK
+        int userId FK
+        string title
+        text message
+        string type
+        boolean isRead
+        string link
+    }
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.3.7 PERANCANGAN ANTARMUKA -->
+    <!-- ========================================== -->
+    <section id="sec-4-3-7" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Sub-Bab 4.3.7</span>
+            <h2 class="text-2xl font-bold text-slate-900">Perancangan Antarmuka (Interface Design)</h2>
+          </div>
+          <div class="flex gap-2 no-print">
+            <button onclick="copySectionText('text-4-3-7')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">
+              📋 Salin Teks
+            </button>
+            <button onclick="downloadDiagramAsPng('diagram-sitemap', '4.3.7_Sitemap_Navigasi_Antarmuka')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition">
+              📥 Download PNG Sitemap
+            </button>
+          </div>
+        </div>
+
+        <div id="text-4-3-7" class="prose max-w-none text-slate-700 leading-relaxed space-y-4 text-justify">
+          <p>
+            Perancangan antarmuka dirancang responsif mengikuti pedoman <em>User-Centered Design (UCD)</em> sehingga mudah digunakan baik melalui peramban desktop maupun ponsel pintar. Antarmuka dibagi menjadi 4 (empat) modul berdasarkan hak akses:
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 mt-6">1. Antarmuka Publik (Public Portal)</h3>
+          <ul class="list-disc list-outside pl-5 space-y-1">
+            <li><strong>Halaman Beranda (<code>Home.jsx</code>):</strong> Berisi navigasi utama, banner promosi edukasi pertanian modern Polinela, highlight paket favorit, showcase keunggulan fasilitas, galeri dokumentasi kegiatan siswa terdahulu, testimoni, dan bagian FAQ.</li>
+            <li><strong>Halaman Katalog Paket (<code>Catalog.jsx</code>):</strong> Menampilkan kartu-kartu paket edukasi terstruktur beserta tarif per peserta (misal: Paket Pertanian Modern Rp35.000/siswa), jumlah minimal peserta, durasi, dan daftar fasilitas termasuk konsumsi/snack.</li>
+            <li><strong>Halaman Autentikasi (<code>Login.jsx</code> & <code>Register.jsx</code>):</strong> Antarmuka masuk dan pendaftaran akun guru/sekolah baru dengan validasi format email, nomor WhatsApp aktif, dan asal lembaga pendidikan.</li>
+          </ul>
+
+          <h3 class="text-lg font-bold text-slate-900 mt-6">2. Antarmuka Pengunjung / Pemohon (User Portal)</h3>
+          <ul class="list-disc list-outside pl-5 space-y-1">
+            <li>
+              <strong>Wizard Reservasi 6 Langkah (<code>BookingWizard.jsx</code>):</strong>
+              <ul class="list-circle list-outside pl-5 space-y-1 mt-1 text-slate-600 text-xs">
+                <li><em>Step 1 (Data Pemesan):</em> Form isian nama lengkap penanggung jawab (PIC), email, nomor WhatsApp/telepon, dan jabatan pemesan di sekolah.</li>
+                <li><em>Step 2 (Data Sekolah/Instansi):</em> Nama resmi sekolah, jenjang pendidikan (PAUD/TK, SD, SMP, SMA/SMK, Umum), alamat lengkap, kota/kabupaten, serta nama guru pendamping.</li>
+                <li><em>Step 3 (Jadwal & Kuota Peserta):</em> Kalender interaktif pemilihan tanggal kunjungan, sesi waktu (Sesi Pagi: 08:30–11:30 WIB atau Sesi Siang: 13:00–15:30 WIB), jumlah siswa, dan jumlah guru.</li>
+                <li><em>Step 4 (Paket & 2 Aktivitas Wajib):</em> Pemilihan paket utama dan pemilihan tepat 2 aktivitas laboratorium terpadu (sistem memvalidasi agar tidak kurang dan tidak lebih dari 2 pilihan).</li>
+                <li><em>Step 5 (Review Rincian & Persetujuan):</em> Tabel kalkulasi biaya otomatis (Jumlah Siswa × Harga Paket), ringkasan data, kolom catatan khusus, dan kotak centang persetujuan data.</li>
+                <li><em>Step 6 (Kartu Konfirmasi Berhasil):</em> Layar pendaftaran sukses yang menampilkan kode booking unik berformat <code>POL-YYYYMMDD-XXXX</code>, status <code>PENDING_REVIEW</code>, tombol cetak surat reservasi sementara, dan link langsung ke halaman pemantauan status.</li>
+              </ul>
+            </li>
+            <li><strong>Dashboard Pengguna (<code>UserDashboard.jsx</code>):</strong> Menampilkan kartu ringkasan status booking aktif, riwayat kunjungan yang telah selesai, timeline audit trail, serta tombol langsung menuju pengunggahan pembayaran jika status permohonan telah di-<em>Approve</em>.</li>
+            <li><strong>Halaman Pembayaran (<code>PaymentPage.jsx</code>):</strong> Memuat rincian invoice nominal transfer resmi, nomor rekening resmi Polinela (Bank BNI dan BMT Muamalah), form unggah foto bukti transfer, serta status verifikasi pembayaran.</li>
+          </ul>
+
+          <h3 class="text-lg font-bold text-slate-900 mt-6">3. Antarmuka Administrator (Admin Dashboard)</h3>
+          <p>
+            Modul pengelola terpusat pada file <code>AdminDashboard.jsx</code> yang memuat 8 tab navigasi manajemen operasional:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs not-prose my-4">
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">1. Tab Ringkasan (Overview):</span>
+              <p class="text-slate-600 mt-1">Kartu metrik statistik (Total Booking, Total Estimasi Pendapatan, Booking Menunggu Review, Booking Menunggu Verifikasi Pembayaran), ringkasan kunjungan terdekat.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">2. Tab Manajemen Booking:</span>
+              <p class="text-slate-600 mt-1">Tabel data pemohon dilengkapi pencarian, filter status, modal detail pemesan, tombol Setujui (Approve), Tolak (Reject) + input alasan, dan Minta Revisi + catatan revisi.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">3. Tab Verifikasi Pembayaran:</span>
+              <p class="text-slate-600 mt-1">Pemeriksaan bukti transfer yang diunggah pemohon, preview gambar struk resolusi asli, tombol verifikasi (Set CONFIRMED) atau penolakan dengan alasan.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">4. Tab Kalender & Ketersediaan Slot:</span>
+              <p class="text-slate-600 mt-1">Monitoring kuota kunjungan per tanggal, ubah kapasitas maksimal, dan opsi blokir tanggal libur.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">5. Tab Kelola Paket & Aktivitas:</span>
+              <p class="text-slate-600 mt-1">Formulir CRUD paket edukasi, harga per orang, fasilitas, dan master jenis aktivitas laboratorium.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">6. Tab Kelola Pengguna:</span>
+              <p class="text-slate-600 mt-1">Daftar pengguna terdaftar, nomor kontak sekolah, dan status aktif/non-aktif akun.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">7. Tab Rekap Booking Per Sekolah:</span>
+              <p class="text-slate-600 mt-1">Laporan agregasi statistik per sekolah, jumlah kunjungan kumulatif, dan total peserta yang telah diedukasi.</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+              <span class="font-bold text-blue-700">8. Tab Pengaturan Rekening:</span>
+              <p class="text-slate-600 mt-1">Manajemen nomor rekening bank resmi dan petunjuk transfer pembayaran.</p>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 mt-6">4. Antarmuka Pimpinan (Dashboard Analitik)</h3>
+          <p>
+            Modul khusus peran <code>pimpinan</code> disediakan melalui <code>PimpinanDashboard.jsx</code> dan endpoint terlindungi <code>/api/pimpinan</code>. Ringkasan eksekutif menampilkan total kunjungan, peserta, pemesanan, serta pendapatan yang pembayarannya telah diverifikasi. Delapan grafik yang disajikan adalah:
+          </p>
+          <ol class="list-decimal list-outside pl-5 space-y-1 text-xs">
+            <li>Frekuensi kegiatan yang paling dan kurang diminati.</li>
+            <li>Kunjungan dan jumlah peserta berdasarkan jenjang pendidikan.</li>
+            <li>Jumlah kunjungan berdasarkan periode waktu (bulanan).</li>
+            <li>Perbandingan pemesanan paket edukasi dan jumlah pesertanya.</li>
+            <li>Distribusi status pemesanan.</li>
+            <li>Pendapatan per periode dari pembayaran berstatus terverifikasi.</li>
+            <li>Sepuluh sekolah/instansi dengan jumlah peserta terbanyak.</li>
+            <li>Tren kenaikan atau penurunan kunjungan antarbulan.</li>
+          </ol>
+          <p>
+            Dashboard menyediakan filter semua data, hari ini, mingguan, bulanan, tahunan, atau rentang tanggal khusus. Tab rekapitulasi mendukung pencarian, pengurutan, dan paginasi; laporan dapat diunduh sebagai CSV kompatibel Excel atau dicetak/disimpan sebagai PDF melalui dialog cetak peramban.
+          </p>
+        </div>
+
+        <!-- Diagram Sitemap UI -->
+        <div class="mt-8 bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-center text-slate-500 uppercase tracking-widest mb-4">Gambar 4.7 Diagram Alur Navigasi Antarmuka (Site Map)</p>
+          <div id="diagram-sitemap" class="diagram-container flex justify-center overflow-x-auto">
+            <pre class="mermaid">
+flowchart TD
+    Root["Aplikasi Web Kunjungan Edukasi POLINELA"]
+
+    subgraph PublicPages ["Halaman Publik"]
+        Home["Beranda (Home)"]
+        Katalog["Katalog Paket & Aktivitas"]
+        AuthPages["Login / Registrasi Akun"]
+    end
+
+    subgraph UserPages ["Portal Pengguna / Sekolah (Protected)"]
+        UserDash["Dashboard Pengguna"]
+        Wizard["Wizard Reservasi (6 Langkah)"]
+        PaymentUI["Halaman Pembayaran & Upload Bukti"]
+        UserDash --> Wizard
+        UserDash --> PaymentUI
+    end
+
+    subgraph AdminPages ["Portal Administrator UPB (Admin Only)"]
+        AdminDash["Dashboard Administrator"]
+        Tab1["1. Overview Metrik"]
+        Tab2["2. Manajemen Booking"]
+        Tab3["3. Verifikasi Pembayaran"]
+        Tab4["4. Kalender & Slot Kuota"]
+        Tab5["5. Kelola Paket & Aktivitas"]
+        Tab6["6. Kelola Pengguna"]
+        Tab7["7. Rekap per Sekolah"]
+        Tab8["8. Pengaturan Rekening"]
+        AdminDash --> Tab1
+        AdminDash --> Tab2
+        AdminDash --> Tab3
+        AdminDash --> Tab4
+        AdminDash --> Tab5
+        AdminDash --> Tab6
+        AdminDash --> Tab7
+        AdminDash --> Tab8
+    end
+
+    subgraph PimpinanPages ["Portal Pimpinan UPB (Pimpinan Only)"]
+        PimpinanDash["Dashboard Analitik Pimpinan"]
+        Charts["Ringkasan & 8 Grafik Analitik"]
+        FilterRekap["Filter Periode & Rekapitulasi"]
+        ExportReport["Ekspor CSV / Cetak PDF"]
+        PimpinanDash --> Charts
+        PimpinanDash --> FilterRekap
+        PimpinanDash --> ExportReport
+    end
+
+    Root --> PublicPages
+    AuthPages -->|Login Sukses (Role User)| UserPages
+    AuthPages -->|Login Sukses (Role Admin)| AdminPages
+    AuthPages -->|Login Sukses (Role Pimpinan)| PimpinanPages
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script Helper for Mermaid & Exporting -->
+  <script>
+    // Initialize Mermaid
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'system-ui, sans-serif'
+    });
+
+    // Toast Notification Helper
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      toastMsg.innerText = message;
+      toastIcon.innerText = isSuccess ? '✅' : 'ℹ️';
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2500);
+    }
+
+    // Function to Download Diagram as PNG with High Resolution
+    function downloadDiagramAsPng(containerId, filename) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const svg = container.querySelector('svg');
+      if (!svg) {
+        showToast('Diagram belum selesai dimuat.', false);
+        return;
+      }
+
+      // Clone SVG to modify without breaking page layout
+      const svgClone = svg.cloneNode(true);
+      const bbox = svg.getBoundingClientRect();
+      const width = bbox.width > 0 ? bbox.width : 1200;
+      const height = bbox.height > 0 ? bbox.height : 800;
+
+      svgClone.setAttribute('width', width);
+      svgClone.setAttribute('height', height);
+      svgClone.style.backgroundColor = '#ffffff';
+
+      const svgData = new XMLSerializer().serializeToString(svgClone);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const URL = window.URL || window.webkitURL || window;
+      const blobURL = URL.createObjectURL(svgBlob);
+
+      const image = new Image();
+      image.onload = function () {
+        // High-DPI scale multiplier for sharp print quality
+        const scale = 2.5;
+        const canvas = document.createElement('canvas');
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        const pngUrl = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngUrl;
+        downloadLink.download = (filename || 'diagram') + '.png';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(blobURL);
+
+        showToast('Gambar ' + filename + '.png berhasil diunduh!');
+      };
+      image.src = blobURL;
+    }
+
+    // Function to Copy Section Text to Clipboard
+    function copySectionText(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Teks sub-bab berhasil disalin!');
+      }).catch(err => {
+        showToast('Gagal menyalin teks.', false);
+      });
+    }
+
+    // Function to Copy Entire Document Text
+    function copyAllDocument() {
+      const main = document.querySelector('main');
+      if (!main) return;
+      navigator.clipboard.writeText(main.innerText).then(() => {
+        showToast('Seluruh teks Bab 4 berhasil disalin!');
+      }).catch(err => {
+        showToast('Gagal menyalin dokumen.', false);
+      });
+    }
+  </script>
+</body>
+</html>

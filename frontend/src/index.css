@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', sans-serif;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Custom Scrollbar for Light Theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glass booking wizard: keeps the existing wizard structure and fields. */
+.booking-wizard-page .bg-white {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.24);
+}
+
+.booking-wizard-page h1,
+.booking-wizard-page h2,
+.booking-wizard-page h3,
+.booking-wizard-page .text-slate-900,
+.booking-wizard-page .text-slate-800,
+.booking-wizard-page .text-slate-700,
+.booking-wizard-page .text-slate-600,
+.booking-wizard-page .text-slate-500 {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.booking-wizard-page p,
+.booking-wizard-page label,
+.booking-wizard-page .text-slate-700,
+.booking-wizard-page .text-slate-600,
+.booking-wizard-page .text-slate-500 {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.booking-wizard-page input,
+.booking-wizard-page textarea,
+.booking-wizard-page select {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.booking-wizard-page input::placeholder,
+.booking-wizard-page textarea::placeholder {
+  color: rgba(255, 255, 255, 0.48) !important;
+}
+
+.booking-wizard-page select option {
+  background: #0f172a;
+  color: white;
+}
+
+.booking-wizard-page input:disabled {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.booking-wizard-page .bg-slate-50,
+.booking-wizard-page .bg-slate-100,
+.booking-wizard-page .bg-blue-50,
+.booking-wizard-page .bg-amber-50,
+.booking-wizard-page .bg-red-50,
+.booking-wizard-page .bg-rose-50 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
