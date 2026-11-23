@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/api_service.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +16,58 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+
+  void _showServerSettings() async {
+    final currentUrl = await ApiService().getBaseUrl();
+    final urlController = TextEditingController(text: currentUrl);
+
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Pengaturan Alamat Server'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Masukkan IP Komputer atau domain backend Anda:',
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: urlController,
+              decoration: const InputDecoration(
+                hintText: 'http://192.168.1.xxx:5000/api',
+                labelText: 'Base API URL',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final newUrl = urlController.text.trim();
+              if (newUrl.isNotEmpty) {
+                await ApiService().updateBaseUrl(newUrl);
+                if (mounted) {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Alamat server diubah: $newUrl')),
+                  );
+                }
+              }
+            },
+            child: const Text('Simpan'),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _handleLogin() async {
     final email = _emailController.text.trim();
@@ -33,11 +86,12 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final success = await context.read<AuthProvider>().login(email, password);
       if (!success && mounted) {
-        setState(() => _errorMessage = 'Login gagal, periksa kredensial.');
+        setState(() => _errorMessage = 'Login gagal, periksa email dan password.');
       }
     } catch (e) {
       if (mounted) {
-        setState(() => _errorMessage = 'Gagal terhubung ke server.');
+        final currentUrl = await ApiService().getBaseUrl();
+        setState(() => _errorMessage = 'Gagal terhubung ke: $currentUrl\nPastikan backend aktif & gunakan icon ⚙️ di pojok atas untuk atur IP.');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -47,13 +101,23 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: Color(0xFF15803D)),
+            tooltip: 'Atur Alamat Server (IP)',
+            onPressed: _showServerSettings,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 30),
               Center(
                 child: Image.asset(
                   'assets/images/logo.png',
@@ -81,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 28),
 
               if (_errorMessage != null) ...[
                 Container(
