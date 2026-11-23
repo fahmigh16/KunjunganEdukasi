@@ -1,0 +1,49 @@
+name: Build Flutter Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Memungkinkan klik tombol "Run workflow" secara manual di GitHub
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java Development Kit (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Initialize Android Platform Files
+        working-directory: ./mobile
+        run: |
+          flutter create --platforms=android --org id.ac.polinela .
+
+      - name: Install Flutter Dependencies
+        working-directory: ./mobile
+        run: flutter pub get
+
+      - name: Build Release APK
+        working-directory: ./mobile
+        run: flutter build apk --release
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-kunjungan-edukasi-polinela-release
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
