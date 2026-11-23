@@ -5,7 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Memungkinkan klik tombol "Run workflow" secara manual di GitHub
+  workflow_dispatch:
 
 jobs:
   build:
@@ -32,6 +32,11 @@ jobs:
         working-directory: ./mobile
         run: |
           flutter create --platforms=android --org id.ac.polinela .
+          # Update compileSdk to 34 to satisfy file_picker and latest android dependencies
+          sed -i 's/compileSdkVersion = flutter.compileSdkVersion/compileSdkVersion = 34/g' android/app/build.gradle
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/g' android/app/build.gradle
+          sed -i 's/minSdkVersion = flutter.minSdkVersion/minSdkVersion = 21/g' android/app/build.gradle
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 21/g' android/app/build.gradle
 
       - name: Install Flutter Dependencies
         working-directory: ./mobile
